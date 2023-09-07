@@ -1,9 +1,4 @@
-import {
-  CameraControls,
-  Html,
-  useAnimations,
-  useGLTF,
-} from "@react-three/drei";
+import { CameraControls, useAnimations, useGLTF } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
   forwardRef,
@@ -20,8 +15,6 @@ import {
   MathUtils,
   Scene,
   SkinnedMesh,
-  Texture,
-  TextureLoader,
   Vector3,
 } from "three";
 import { SkeletonUtils } from "three-stdlib";

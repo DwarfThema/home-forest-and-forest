@@ -71,8 +71,6 @@ export default function Frame({
   const elephantMesh = elephnatNodes.elephantMesh as SkinnedMesh;
 
   useEffect(() => {
-    console.log(plantMeshes);
-
     if (actions[names[0]]) {
       const currentAction = actions[names[0]] as AnimationAction;
       console.log(currentAction);
@@ -123,13 +121,13 @@ export default function Frame({
                   } else {
                     return (
                       <Float
+                        key={index}
                         speed={1}
                         rotationIntensity={1}
                         floatIntensity={2}
                         floatingRange={[0, 0]}
                       >
                         <mesh
-                          key={index}
                           geometry={mesh.geometry}
                           material={mesh.material}
                           position={mesh.position}
