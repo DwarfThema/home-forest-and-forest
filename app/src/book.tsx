@@ -79,9 +79,6 @@ const Book = forwardRef(({ ...props }, ref) => {
 
   const { ref: animRef, actions, names } = useAnimations(animations);
 
-  const grassMesh = nodes.Cube006 as SkinnedMesh;
-  const grassMtl = grassMesh.material as Material;
-
   const meshs: SkinnedMesh[] = [];
   bookMesh.traverse((obj) => {
     if (obj instanceof SkinnedMesh) {
@@ -277,8 +274,8 @@ function Rig({
   useEffect(() => {
     const enter = scene.getObjectByName(params?.id as string);
     if (enter) {
-      enter?.parent?.localToWorld(position.set(-3, 0, 0));
-      enter?.parent?.localToWorld(focus.set(0, 0.5, 0));
+      enter?.parent?.localToWorld(position.set(1, -1.8, -2.2));
+      enter?.parent?.localToWorld(focus.set(5, -1.8, -2.2));
     }
     controls?.setLookAt(...position.toArray(), ...focus.toArray(), true);
   });
