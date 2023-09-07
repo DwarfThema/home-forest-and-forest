@@ -1,4 +1,5 @@
 import {
+  Float,
   Gltf,
   MeshPortalMaterial,
   useAnimations,
@@ -8,7 +9,14 @@ import {
 import { extend, useFrame, useGraph } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { easing, geometry } from "maath";
-import { AnimationAction, AnimationMixer, DoubleSide, Mesh } from "three";
+import {
+  AnimationAction,
+  AnimationMixer,
+  DoubleSide,
+  Group,
+  Mesh,
+  SkinnedMesh,
+} from "three";
 import { useRoute, useLocation } from "wouter";
 import { useControls } from "leva";
 import { useRouter } from "next/router";
@@ -33,9 +41,9 @@ export default function Frame({
   scale?: number;
 }) {
   const { posx, posy, posz } = useControls({
-    posx: { value: -2.5, step: 0.1 },
-    posy: { value: -1.2, step: 0.1 },
-    posz: { value: -6.0, step: 0.1 },
+    posx: { value: 0, step: 0.1 },
+    posy: { value: 0, step: 0.1 },
+    posz: { value: 0, step: 0.1 },
   });
 
   const portal = useRef() as any;
@@ -44,17 +52,40 @@ export default function Frame({
   const [_, params] = useRoute("/:id");
   const [, setLocation] = useLocation();
 
-  const [currentActionState, setCurrentActionState] =
-    useState<AnimationAction | null>(null);
+  const { scene: plantScene } = useGLTF("/models/plant.gltf");
+  const { nodes: plantNodes } = useGraph(plantScene);
 
-  const { scene, animations } = useGLTF("/models/elephant.gltf");
-  const { nodes } = useGraph(scene);
+  const plantMesh = plantNodes.mesh as Group;
 
-  const elephantMesh = nodes.elephant as Mesh;
+  const plantMeshes: Mesh[] = [];
+  plantMesh.traverse((obj) => {
+    if (obj instanceof Mesh) {
+      plantMeshes.push(obj);
+    }
+  });
+
+  const { scene: elephantScene, animations } = useGLTF("/models/elephant.gltf");
+  const { nodes: elephnatNodes } = useGraph(elephantScene);
+  const { ref: animRef, actions, names } = useAnimations(animations);
+
+  const elephantMesh = elephnatNodes.elephantMesh as SkinnedMesh;
+
+  useEffect(() => {
+    console.log(plantMeshes);
+
+    if (actions[names[0]]) {
+      const currentAction = actions[names[0]] as AnimationAction;
+      console.log(currentAction);
+      currentAction.reset();
+      currentAction.setEffectiveTimeScale(1);
+      currentAction.play();
+    }
+  }, [props.visible]);
 
   useFrame((state, dt) => {
     easing.damp(portal.current, "blend", params?.id === id ? 1 : 0, 0.2, dt);
   });
+  ``;
 
   return (
     <group {...props}>
@@ -76,29 +107,55 @@ export default function Frame({
           <color attach="background" args={[bg]} />
           <Suspense fallback={null}>
             <group position={[-2.5, -1.2, -6.0]}>
-              <Gltf
-                src="/models/plant.gltf"
-                position={[0, -1, 0]}
-                castShadow
-                receiveShadow
-              />
-              <mesh
-                geometry={elephantMesh.geometry}
-                material={elephantMesh.material}
-                position={[-0.7, -0.8, -0.6]}
-                receiveShadow
-                castShadow
-              />
-              <group position={[0, 0, 0]}>
-                <Gltf
-                  src="/models/sign_base.gltf"
-                  position={[0, -1, 0]}
-                  castShadow
+              <group>
+                {plantMeshes.map((mesh, index) => {
+                  if (mesh.name === "Ground" || mesh.name.includes("bush")) {
+                    return (
+                      <mesh
+                        key={index}
+                        geometry={mesh.geometry}
+                        material={mesh.material}
+                        position={mesh.position}
+                        receiveShadow
+                        castShadow
+                      />
+                    );
+                  } else {
+                    return (
+                      <Float
+                        speed={1}
+                        rotationIntensity={1}
+                        floatIntensity={2}
+                        floatingRange={[0, 0]}
+                      >
+                        <mesh
+                          key={index}
+                          geometry={mesh.geometry}
+                          material={mesh.material}
+                          position={mesh.position}
+                          receiveShadow
+                          castShadow
+                        />
+                      </Float>
+                    );
+                  }
+                })}
+              </group>
+
+              <group>
+                <primitive object={elephnatNodes.Bone} ref={animRef} />
+                <skinnedMesh
+                  geometry={elephantMesh.geometry}
+                  material={elephantMesh.material}
+                  skeleton={elephantMesh.skeleton}
                   receiveShadow
+                  castShadow
                 />
+              </group>
+              <group>
+                <Gltf src="/models/sign_base.gltf" castShadow receiveShadow />
                 <Gltf
                   src="/models/sign_home.gltf"
-                  position={[0, -1, 0]}
                   castShadow
                   receiveShadow
                   onClick={() => {
@@ -110,7 +167,6 @@ export default function Frame({
                 />
                 <Gltf
                   src="/models/sign_sillyday.gltf"
-                  position={[0, -1, 0]}
                   castShadow
                   receiveShadow
                   onClick={() => {
@@ -123,7 +179,6 @@ export default function Frame({
                 />
                 <Gltf
                   src="/models/sign_sillysally.gltf"
-                  position={[0, -1, 0]}
                   castShadow
                   receiveShadow
                   onClick={() => {

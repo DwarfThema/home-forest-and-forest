@@ -17,9 +17,7 @@ import {
   AnimationAction,
   Group,
   LoopOnce,
-  Material,
   MathUtils,
-  Mesh,
   Scene,
   SkinnedMesh,
   Texture,
@@ -274,8 +272,8 @@ function Rig({
   useEffect(() => {
     const enter = scene.getObjectByName(params?.id as string);
     if (enter) {
-      enter?.parent?.localToWorld(position.set(1, -1.8, -2.2));
-      enter?.parent?.localToWorld(focus.set(5, -1.8, -2.2));
+      enter?.parent?.localToWorld(position.set(1, -0.7, -2.2));
+      enter?.parent?.localToWorld(focus.set(5, -0.7, -2.2));
     }
     controls?.setLookAt(...position.toArray(), ...focus.toArray(), true);
   });
