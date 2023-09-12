@@ -20,6 +20,10 @@ import {
 import { useRoute, useLocation } from "wouter";
 import { useControls } from "leva";
 import { useRouter } from "next/router";
+import Plant from "./inner/plant";
+import Statics from "./inner/statics";
+import Elephant from "./inner/elephant";
+import Sign from "./inner/sign";
 
 extend(geometry);
 
@@ -40,10 +44,11 @@ export default function Frame({
   position?: any;
   scale?: number;
 }) {
-  const { posx, posy, posz } = useControls({
-    posx: { value: 0, step: 0.1 },
+  const { groundColor } = useControls({
+    /*     posx: { value: 0, step: 0.1 },
     posy: { value: 0, step: 0.1 },
-    posz: { value: 0, step: 0.1 },
+    posz: { value: 0, step: 0.1 }, */
+    groundColor: true,
   });
 
   const portal = useRef() as any;
@@ -52,17 +57,20 @@ export default function Frame({
   const [_, params] = useRoute("/:id");
   const [, setLocation] = useLocation();
 
-  const { scene: plantScene } = useGLTF("/models/plant.gltf");
-  const { nodes: plantNodes } = useGraph(plantScene);
-
-  const plantMesh = plantNodes.mesh as Group;
-
-  const plantMeshes: Mesh[] = [];
-  plantMesh.traverse((obj) => {
-    if (obj instanceof Mesh) {
-      plantMeshes.push(obj);
-    }
+  useFrame((state, dt) => {
+    easing.damp(portal.current, "blend", params?.id === id ? 1 : 0, 0.2, dt);
   });
+  ``;
+
+  const [groundName, setGroundName] = useState("");
+
+  useEffect(() => {
+    if (groundColor) {
+      setGroundName("/models/plant_ground_1.gltf");
+    } else {
+      setGroundName("/models/plant_ground_2.gltf");
+    }
+  }, [groundColor]);
 
   const { scene: elephantScene, animations } = useGLTF("/models/elephant.gltf");
   const { nodes: elephnatNodes } = useGraph(elephantScene);
@@ -73,17 +81,25 @@ export default function Frame({
   useEffect(() => {
     if (actions[names[0]]) {
       const currentAction = actions[names[0]] as AnimationAction;
-      console.log(currentAction);
       currentAction.reset();
       currentAction.setEffectiveTimeScale(1);
       currentAction.play();
     }
-  }, [props.visible]);
+  }, []);
 
-  useFrame((state, dt) => {
-    easing.damp(portal.current, "blend", params?.id === id ? 1 : 0, 0.2, dt);
+  // space that need to erase
+  const { scene: staticScene } = useGLTF("/models/plant.gltf");
+  const { nodes: staticNodes } = useGraph(staticScene);
+
+  const plantMesh = staticNodes.mesh as Group;
+
+  const staticsMeshs: Mesh[] = [];
+  plantMesh.traverse((obj) => {
+    if (obj instanceof Mesh) {
+      staticsMeshs.push(obj);
+    }
   });
-  ``;
+  // space that need to erase
 
   return (
     <group {...props}>
@@ -104,10 +120,15 @@ export default function Frame({
         >
           <color attach="background" args={[bg]} />
           <Suspense fallback={null}>
-            <group position={[-2.5, -1.2, -6.0]}>
+            <group position={[-2.5, -1.2, -6.0]} name="innerObject">
+              {/* <Statics /> */}
+              <Sign />
+              <Gltf src={groundName} />
+              {/* <Plant /> */}
+
               <group>
-                {plantMeshes.map((mesh, index) => {
-                  if (mesh.name === "Ground" || mesh.name.includes("bush")) {
+                {staticsMeshs.map((mesh, index) => {
+                  if (mesh.name.includes("bush")) {
                     return (
                       <mesh
                         key={index}
@@ -118,6 +139,8 @@ export default function Frame({
                         castShadow
                       />
                     );
+                  } else if (mesh.name === "Ground") {
+                    null;
                   } else {
                     return (
                       <Float
@@ -140,52 +163,14 @@ export default function Frame({
                 })}
               </group>
 
-              <group>
-                <primitive object={elephnatNodes.Bone} ref={animRef} />
+              <group name="elephant">
+                <primitive object={elephnatNodes?.Bone} ref={animRef} />
                 <skinnedMesh
                   geometry={elephantMesh.geometry}
                   material={elephantMesh.material}
                   skeleton={elephantMesh.skeleton}
                   receiveShadow
                   castShadow
-                />
-              </group>
-              <group>
-                <Gltf src="/models/sign_base.gltf" castShadow receiveShadow />
-                <Gltf
-                  src="/models/sign_home.gltf"
-                  castShadow
-                  receiveShadow
-                  onClick={() => {
-                    var newWindow = window.open("about:blank") as Window;
-                    if (newWindow) {
-                      newWindow.location.href = "https://sillyday.kr/";
-                    }
-                  }}
-                />
-                <Gltf
-                  src="/models/sign_sillyday.gltf"
-                  castShadow
-                  receiveShadow
-                  onClick={() => {
-                    var newWindow = window.open("about:blank") as Window;
-                    if (newWindow) {
-                      newWindow.location.href =
-                        "https://www.instagram.com/sillyday.official/";
-                    }
-                  }}
-                />
-                <Gltf
-                  src="/models/sign_sillysally.gltf"
-                  castShadow
-                  receiveShadow
-                  onClick={() => {
-                    var newWindow = window.open("about:blank") as Window;
-                    if (newWindow) {
-                      newWindow.location.href =
-                        "https://www.instagram.com/sillysally.official/";
-                    }
-                  }}
                 />
               </group>
             </group>
