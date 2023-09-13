@@ -8,6 +8,8 @@ import { Suspense, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useControls } from "leva";
 import Image from "next/image";
+import Frame from "./src/frame";
+import { ScenePortal } from "./src/scenePortal";
 
 export default function Home() {
   const positions = [...Array(300)]
@@ -60,7 +62,7 @@ export default function Home() {
         <color attach="background" args={["#202130"]} />
         <fog attach="fog" args={["#202030", 10, 70]} />
         <Suspense fallback={null}>
-          <Book ref={bookRef} />
+          <Book ref={bookRef} portalVisibleFunc={(result: boolean) => {}} />
           <Sparkles
             count={200}
             scale={[20, 20, 10]}

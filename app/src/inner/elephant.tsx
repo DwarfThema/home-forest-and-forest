@@ -1,14 +1,16 @@
 import { useAnimations, useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimationAction, SkinnedMesh } from "three";
 
 export default function Elephant({ ...props }) {
-  const { scene: elephantScene, animations } = useGLTF("/models/elephant.gltf");
-  const { nodes: elephnatNodes } = useGraph(elephantScene);
+  const [src, setSrc] = useState("/models/elephant.gltf");
+  const { nodes, animations } = useGLTF(src) as any;
+  const geometry = useMemo(() => nodes, []);
+
   const { ref: animRef, actions, names } = useAnimations(animations);
 
-  const elephantMesh = elephnatNodes.elephantMesh as SkinnedMesh;
+  const elephantMesh = geometry.elephantMesh as SkinnedMesh;
 
   useEffect(() => {
     if (actions[names[0]]) {
@@ -20,8 +22,8 @@ export default function Elephant({ ...props }) {
   }, []);
 
   return (
-    <group name="elephant">
-      <primitive object={elephnatNodes?.Bone} ref={animRef} />
+    <group dispose={null} ref={animRef as any}>
+      <primitive object={geometry.Bone} />
       <skinnedMesh
         geometry={elephantMesh.geometry}
         material={elephantMesh.material}

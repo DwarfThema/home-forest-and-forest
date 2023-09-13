@@ -1,9 +1,12 @@
 import { Float, useGLTF } from "@react-three/drei";
 import { useGraph } from "@react-three/fiber";
+import { useState } from "react";
 import { Group, Mesh } from "three";
 
 export default function Statics({ ...props }) {
-  const { scene: staticScene } = useGLTF("/models/plant_static.gltf");
+  const [src, setSrc] = useState("/models/plant_static.gltf");
+
+  const { scene: staticScene } = useGLTF(src);
   const { nodes: staticNodes } = useGraph(staticScene);
 
   const plantMesh = staticNodes.mesh as Group;
