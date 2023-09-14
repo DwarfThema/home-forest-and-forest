@@ -4,17 +4,11 @@ import StarsBg from "./src/starBg";
 import Book from "./src/book";
 import { Environment, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { useControls } from "leva";
 import Image from "next/image";
-import Frame from "./src/frame";
-import { ScenePortal } from "./src/scenePortal";
-import { useRoute } from "wouter";
 
 export default function Home() {
-  const [_, params] = useRoute("/:id");
-
   const positions = [...Array(300)]
     .map(() => ({
       position: [
@@ -53,10 +47,7 @@ export default function Home() {
         ) : (
           <button
             onClick={() => {
-              if (params?.id === "world") {
-              } else {
-                bookRef.current.reverseBtn();
-              }
+              bookRef.current.reverseBtn();
             }}
           >
             <Image
