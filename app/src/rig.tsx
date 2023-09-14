@@ -2,7 +2,6 @@ import { CameraControls } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import { useEffect } from "react";
 import { Scene, Vector3 } from "three";
-import { useRoute } from "wouter";
 
 export default function Rig({
   position = new Vector3(0, 0, 0),
@@ -13,14 +12,8 @@ export default function Rig({
   focus?: Vector3;
   camSpeed?: number;
 }) {
-  const { controls, scene } = useThree() as { controls: any; scene: Scene };
-  const [, params] = useRoute("/:id");
+  const { controls } = useThree() as { controls: any };
   useEffect(() => {
-    const enter = scene.getObjectByName(params?.id as string);
-    if (enter) {
-      enter?.parent?.localToWorld(position.set(1, -0.7, -2.2));
-      enter?.parent?.localToWorld(focus.set(5, -0.7, -2.2));
-    }
     controls?.setLookAt(...position.toArray(), ...focus.toArray(), true);
   });
 

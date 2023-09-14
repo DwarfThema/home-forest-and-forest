@@ -1,4 +1,4 @@
-import { CameraControls, useAnimations, useGLTF } from "@react-three/drei";
+import { Float, useAnimations, useGLTF } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
   forwardRef,
@@ -17,11 +17,11 @@ import {
   Vector3,
 } from "three";
 import { SkeletonUtils } from "three-stdlib";
-import { useControls } from "leva";
-import { useRoute } from "wouter";
 import { geometry } from "maath";
 import Frame from "./frame";
 import Rig from "./rig";
+import { ScenePortal } from "./scenePortal";
+import { useControls } from "leva";
 
 extend(geometry);
 
@@ -30,12 +30,14 @@ sqeuenceInt 설명
 0 : 책이 닫혀진 처음 상태
 1 : 책이 열리고 있는 중인 상태
 2 : 책이 모두 다 열린 상태
-3 : 문이 열리고 있는 중인 상태
-4 : 책이 닫히고 있을 때
+3 : 문이 열리고 있는 중일 때
+4 : 문이 닫히고 있을 때
+5: 문이 다 열렸을 때 
+6: 내부로 들어갔을 때
  */
 
 const Book = forwardRef(
-  ({ portalVisibleFunc, ...props }: { portalVisibleFunc: Function }, ref) => {
+  ({ sqeunceFn, ...props }: { sqeunceFn: Function }, ref) => {
     /*   const { ColorChange } = useControls({
     ColorChange: true,
   }); */
@@ -59,6 +61,8 @@ const Book = forwardRef(
       "/models/book_rig_green.gltf"
     );
 
+    /* book load function */
+
     const { scene, animations } = useGLTF(isBookColor);
     const bookGroupRef = useRef<Group>(null);
 
@@ -66,7 +70,6 @@ const Book = forwardRef(
     const { nodes } = useGraph(clone);
 
     const bookMesh = nodes.Book_Paper as Group;
-    //const bookMesh = nodes.Cube006 as SkinnedMesh;
 
     const { ref: animRef, actions, names } = useAnimations(animations);
 
@@ -77,7 +80,7 @@ const Book = forwardRef(
       }
     });
 
-    // MouseClick Interactive 함수
+    // MouseClick Interactive Function
     const handleBaseRefClick = () => {
       setCamSpeed(3);
       if (sqeuenceInt === 0) {
@@ -88,9 +91,10 @@ const Book = forwardRef(
     };
     //
 
-    // Animation 함수
+    // Animation Function
     const Open = () => {
       setsqeuenceInt(1);
+      sqeunceFn(1);
       setIsOpen(true);
       if (actions[names[1]]) {
         const currentAction = actions[names[1]] as AnimationAction;
@@ -106,8 +110,8 @@ const Book = forwardRef(
     const Door = () => {
       setDoorOpen(true);
       setPortalVisible(true);
-      portalVisibleFunc(true);
       setsqeuenceInt(3);
+      sqeunceFn(3);
       if (actions[names[0]]) {
         const currentAction = actions[names[0]] as AnimationAction;
         setCurrentActionState(currentAction);
@@ -119,8 +123,6 @@ const Book = forwardRef(
       }
     };
     //
-
-    const portalClick = (data: any) => {};
 
     useFrame((state) => {
       //카메라 쉐이크 관련 코드
@@ -155,6 +157,7 @@ const Book = forwardRef(
         sqeuenceInt === 1
       ) {
         setsqeuenceInt(2);
+        sqeunceFn(2);
       }
 
       if (
@@ -163,6 +166,16 @@ const Book = forwardRef(
         sqeuenceInt === 4
       ) {
         setsqeuenceInt(2);
+        sqeunceFn(2);
+      }
+
+      if (
+        currentActionState &&
+        !currentActionState.isRunning() &&
+        sqeuenceInt === 3
+      ) {
+        setsqeuenceInt(5);
+        sqeunceFn(5);
       }
 
       // 두번째 애니메이션 실행뒤 카메라 무빙
@@ -172,10 +185,9 @@ const Book = forwardRef(
       }
     });
 
-    //reverseBtn 관련 코드
+    /* reverse animation */
     const ReverseBookOpen = () => {
       setPortalVisible(false);
-      portalVisibleFunc(false);
 
       const currentAction = actions[names[1]] as AnimationAction;
       setCurrentActionState(currentAction);
@@ -192,18 +204,47 @@ const Book = forwardRef(
       currentAction.timeScale = -1.5;
       currentAction.setLoop(LoopOnce, 1);
       currentAction.play();
+      setCamSpeed(3);
       setsqeuenceInt(4);
-    };
 
+      sqeunceFn(4);
+    };
+    /////////////////////////////////
+
+    /* Enter Portal Action */
+    const [isEnterAction, setEnterAction] = useState(false);
+    const [isEnter, setEnter] = useState(false);
+    const [inAndOutMS, setInAndOutMS] = useState(1900);
+    const [isOut, setOut] = useState(true);
+
+    useEffect(() => {
+      if (sqeuenceInt === 6) {
+        setCamSpeed(1);
+        setCamPos(new Vector3(-0.55, 0.45, -1.0));
+        setCamFocus(new Vector3(-0.55, 0.8, -2.0));
+      }
+    });
+    //////////////////////////////
+
+    /* back btn function */
     useImperativeHandle(ref, () => ({ reverseBtn, switchInput }));
     function reverseBtn() {
       if (sqeuenceInt === 2) {
         setsqeuenceInt(0);
+        sqeunceFn(0);
         setIsOpen(false);
         ReverseBookOpen();
-      } else if (sqeuenceInt === 3) {
+      } else if (sqeuenceInt === 5 && !isEnterAction && isOut) {
         setDoorOpen(false);
         ReverseDoorOpen();
+      } else if (sqeuenceInt === 6 && isEnter) {
+        setEnterAction(true);
+        setsqeuenceInt(5);
+        setEnter(false);
+        setTimeout(() => {
+          setOut(true);
+          setEnterAction(false);
+        }, inAndOutMS + 3000);
       }
     }
 
@@ -214,20 +255,37 @@ const Book = forwardRef(
         setBookColor("/models/book_rig_pink.gltf");
       }
     }
+    //////////////////////
 
     return (
       <>
         <group
           {...props}
-          position={[0, 0, 0]}
+          position={[0, -0.1, 0]}
           rotation={[Math.PI / -0.56, Math.PI / 2.02, Math.PI / 0.52]}
           onClick={handleBaseRefClick}
         >
           <Frame
             visible={isPortalVisible ? true : false}
             position={[1.07, 0.2, -0.51]}
-            doubleClick={() => {}}
-          />
+            doubleClick={() => {
+              if (sqeuenceInt !== 5 && isEnterAction) return;
+              if (sqeuenceInt === 5) {
+                setsqeuenceInt(6);
+                setEnterAction(true);
+                setTimeout(() => {
+                  setEnterAction(false);
+                  setEnter(true);
+                  setOut(false);
+                }, inAndOutMS);
+              }
+            }}
+            isEnter={isEnter}
+          >
+            <group position={[-0.8, -1.2, -6.0]} name="innerObject">
+              <ScenePortal />
+            </group>
+          </Frame>
           <group ref={bookGroupRef}>
             <primitive object={nodes.BaseBone} ref={animRef} />
             {meshs.map((mesh, index) => (
