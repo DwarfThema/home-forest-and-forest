@@ -269,7 +269,7 @@ const Book = forwardRef(
         >
           <Sparkles
             visible={isPortalVisible ? true : false}
-            position={[0.9, 0.25, -0.5]}
+            position={[0.9, 0.25, -0.53]}
             count={35}
             scale={0.1}
             size={1}
