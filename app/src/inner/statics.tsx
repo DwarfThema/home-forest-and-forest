@@ -150,7 +150,6 @@ const MovingMesh = ({
 }: any) => {
   const meshRef = useRef<Mesh | null>(null);
   const [ransomVal, setRansomVal] = useState(Math.random() * 2 * Math.PI);
-
   useFrame(({ clock }) => {
     const mesh = meshRef.current;
     if (mesh) {

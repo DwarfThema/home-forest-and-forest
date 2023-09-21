@@ -68,7 +68,7 @@ const Book = forwardRef(
     const bookMesh = nodes.Book_Paper as Group;
 
     const { ref: animRef, actions, names } = useAnimations(animations);
-
+  
     const meshs: SkinnedMesh[] = [];
     bookMesh.traverse((obj) => {
       if (obj instanceof SkinnedMesh) {
