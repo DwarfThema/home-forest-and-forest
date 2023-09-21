@@ -59,9 +59,8 @@ export default function Home() {
           </button>
         )}
       </div>
-
-      <Canvas shadows camera={{ fov: 40, position: [0, 0, 30], focus: 0 }}>
-        <Environment preset="park" />
+      <Canvas shadows camera={{ fov: 40, position: [0, 0, 20], focus: 0 }}>
+        <Environment preset="apartment" />
         <color attach="background" args={["#202130"]} />
         <fog attach="fog" args={["#202030", 10, 70]} />
         <Suspense fallback={null}>
@@ -91,7 +90,7 @@ export default function Home() {
         </Suspense>
         <EffectComposer>
           <Bloom
-            luminanceThreshold={0}
+            luminanceThreshold={0.8}
             luminanceSmoothing={1.5}
             intensity={1}
           />

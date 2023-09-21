@@ -1,10 +1,11 @@
-import { Gltf, MeshPortalMaterial } from "@react-three/drei";
+import { Gltf, MeshPortalMaterial, Sparkles } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
 import { Suspense, useRef, useState } from "react";
 import { easing, geometry } from "maath";
 import { DoubleSide } from "three";
 import { useRoute, useLocation } from "wouter";
 import { ScenePortal } from "./scenePortal";
+import { useControls } from "leva";
 
 extend(geometry);
 
@@ -35,8 +36,8 @@ export default function Frame({
         onDoubleClick={(e) => (e.stopPropagation(), doubleClick(true))}
         rotation={[Math.PI * 1, Math.PI * 1.5, Math.PI * 1]}
       >
-        <planeGeometry args={[0.5, 0.5, 2]} />
-        <MeshPortalMaterial ref={portal} blur={0.5}>
+        <planeGeometry args={[0.34, 0.43, 1]} />
+        <MeshPortalMaterial ref={portal} blur={1}>
           {children}
         </MeshPortalMaterial>
       </mesh>

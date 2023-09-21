@@ -1,4 +1,5 @@
-import { Float, useAnimations, useGLTF } from "@react-three/drei";
+
+import { Float, Sparkles, useAnimations, useGLTF } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
   forwardRef,
@@ -38,10 +39,6 @@ sqeuenceInt 설명
 
 const Book = forwardRef(
   ({ sqeunceFn, ...props }: { sqeunceFn: Function }, ref) => {
-    /*   const { ColorChange } = useControls({
-    ColorChange: true,
-  }); */
-
     const [camPos, setCamPos] = useState(new Vector3(-1.5, 2.5, 5));
     const [camFocus, setCamFocus] = useState(new Vector3(0.8, -0.3, 0));
     const [camSpeed, setCamSpeed] = useState<number>(20);
@@ -70,7 +67,6 @@ const Book = forwardRef(
     const { nodes } = useGraph(clone);
 
     const bookMesh = nodes.Book_Paper as Group;
-
     const { ref: animRef, actions, names } = useAnimations(animations);
 
     const meshs: SkinnedMesh[] = [];
@@ -150,7 +146,7 @@ const Book = forwardRef(
         }
       }
 
-      // 두번째 애니메이션 활성화를 위한 세팅
+      // 애니메이션 진행중인 상태의 시퀀스 관리
       if (
         currentActionState &&
         !currentActionState.isRunning() &&
@@ -256,7 +252,11 @@ const Book = forwardRef(
       }
     }
     //////////////////////
-
+    const { posx, posy, posz } = useControls({
+      posx: { value: -1, step: 0.1 },
+      posy: { value: -1.9, step: 0.1 },
+      posz: { value: -7.3, step: 0.1 },
+    });
     return (
       <>
         <group
@@ -265,9 +265,18 @@ const Book = forwardRef(
           rotation={[Math.PI / -0.56, Math.PI / 2.02, Math.PI / 0.52]}
           onClick={handleBaseRefClick}
         >
+          <Sparkles
+            visible={isPortalVisible ? true : false}
+            position={[0.97, 0.25, -0.55]}
+            count={35}
+            scale={0.1}
+            size={1}
+            speed={0.1}
+            color={"#fffd8f"}
+          />
           <Frame
             visible={isPortalVisible ? true : false}
-            position={[1.07, 0.2, -0.51]}
+            position={[1.07, 0.2, -0.53]}
             doubleClick={() => {
               if (sqeuenceInt !== 5 && isEnterAction) return;
               if (sqeuenceInt === 5) {
@@ -282,7 +291,7 @@ const Book = forwardRef(
             }}
             isEnter={isEnter}
           >
-            <group position={[-0.8, -1.2, -6.0]} name="innerObject">
+            <group position={[posx, posy, posz]} name="innerObject">
               <ScenePortal />
             </group>
           </Frame>
