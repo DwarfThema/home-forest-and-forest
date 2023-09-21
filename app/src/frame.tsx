@@ -1,11 +1,7 @@
-import { Gltf, MeshPortalMaterial, Sparkles } from "@react-three/drei";
+import { MeshPortalMaterial } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
+import { useRef } from "react";
 import { easing, geometry } from "maath";
-import { DoubleSide } from "three";
-import { useRoute, useLocation } from "wouter";
-import { ScenePortal } from "./scenePortal";
-import { useControls } from "leva";
 
 extend(geometry);
 
