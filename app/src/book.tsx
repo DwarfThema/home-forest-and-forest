@@ -1,3 +1,4 @@
+
 import { Float, Sparkles, useAnimations, useGLTF } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
@@ -66,7 +67,6 @@ const Book = forwardRef(
     const { nodes } = useGraph(clone);
 
     const bookMesh = nodes.Book_Paper as Group;
-
     const { ref: animRef, actions, names } = useAnimations(animations);
 
     const meshs: SkinnedMesh[] = [];
@@ -252,13 +252,11 @@ const Book = forwardRef(
       }
     }
     //////////////////////
-
     const { posx, posy, posz } = useControls({
       posx: { value: -1, step: 0.1 },
       posy: { value: -1.9, step: 0.1 },
       posz: { value: -7.3, step: 0.1 },
     });
-
     return (
       <>
         <group

@@ -59,7 +59,6 @@ export default function Home() {
           </button>
         )}
       </div>
-
       <Canvas shadows camera={{ fov: 40, position: [0, 0, 20], focus: 0 }}>
         <Environment preset="apartment" />
         <color attach="background" args={["#202130"]} />
