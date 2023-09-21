@@ -4,25 +4,27 @@ import StarsBg from "./src/starBg";
 import Book from "./src/book";
 import { Environment, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
 
 export default function Home() {
-  const positions = [...Array(300)]
-    .map(() => ({
-      position: [
-        40 - Math.random() * 100,
-        40 - Math.random() * 100,
-        40 - Math.random() * 100,
-      ],
-    }))
-    .filter(
-      (pos) =>
-        (pos.position[0] < 0 || pos.position[0] > 5) &&
-        (pos.position[1] < 0 || pos.position[1] > 5) &&
-        (pos.position[2] < 0 || pos.position[2] > 5)
-    );
+  const positions = useMemo(() => {
+    return [...Array(300)]
+      .map(() => ({
+        position: [
+          40 - Math.random() * 100,
+          40 - Math.random() * 100,
+          40 - Math.random() * 100,
+        ],
+      }))
+      .filter(
+        (pos) =>
+          (pos.position[0] < 0 || pos.position[0] > 5) &&
+          (pos.position[1] < 0 || pos.position[1] > 5) &&
+          (pos.position[2] < 0 || pos.position[2] > 5)
+      );
+  }, []);
 
   const bookRef = useRef() as any;
   const [isBookStyle, setBookStyle] = useState(true);
