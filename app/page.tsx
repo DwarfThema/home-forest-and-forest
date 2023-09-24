@@ -44,7 +44,21 @@ export default function Home() {
                 setBookStyle((prev) => !prev);
               }}
             />
-            <div className="w-14 h-7 bg-green-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-pink-300 dark:peer-focus:ring-pink-800 rounded-full peer dark:bg-green-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-green-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all dark:border-green-600 peer-checked:bg-pink-600"></div>
+            {isBookStyle ? (
+              <Image
+                src="/textures/pink.jpg"
+                width={200}
+                height={200}
+                alt="coverStyle"
+              />
+            ) : (
+              <Image
+                src="/textures/green.jpg"
+                width={200}
+                height={200}
+                alt="coverStyle"
+              />
+            )}
           </label>
         ) : (
           <button

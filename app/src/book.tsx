@@ -1,4 +1,4 @@
-import { Float, Sparkles, useAnimations, useGLTF } from "@react-three/drei";
+import { Sparkles, useAnimations, useGLTF } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
   forwardRef,
@@ -20,8 +20,8 @@ import { SkeletonUtils } from "three-stdlib";
 import { geometry } from "maath";
 import Frame from "./frame";
 import Rig from "./rig";
-import { ScenePortal } from "./scenePortal";
 import { useControls } from "leva";
+import InnerScene from "./inner/innerScene";
 
 extend(geometry);
 
@@ -216,8 +216,8 @@ const Book = forwardRef(
     useEffect(() => {
       if (sqeuenceInt === 6) {
         setCamSpeed(1);
-        setCamPos(new Vector3(-0.55, 0.45, -1.0));
-        setCamFocus(new Vector3(-0.55, 0.8, -2.0));
+        setCamPos(new Vector3(-0.55, 0.4, -1.0));
+        setCamFocus(new Vector3(-0.55, 0.83, -2.0));
       }
     });
     //////////////////////////////
@@ -293,11 +293,9 @@ const Book = forwardRef(
             }}
             isEnter={isEnter}
           >
-            <group position={[posx, posy, posz]} name="innerObject">
-              <ScenePortal />
-            </group>
+            <InnerScene position={[posx, posy, posz]} name="innerObject" />
           </Frame>
-          <group ref={bookGroupRef}>
+          <group ref={bookGroupRef} name="book">
             <primitive object={nodes.BaseBone} ref={animRef} />
             {meshs.map((mesh, index) => (
               <skinnedMesh
