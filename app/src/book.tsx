@@ -253,12 +253,6 @@ const Book = forwardRef(
     }
     //////////////////////
 
-    const { posx, posy, posz } = useControls({
-      posx: { value: -1, step: 0.1 },
-      posy: { value: -1.9, step: 0.1 },
-      posz: { value: -7.3, step: 0.1 },
-    });
-
     return (
       <>
         <group
@@ -293,7 +287,7 @@ const Book = forwardRef(
             }}
             isEnter={isEnter}
           >
-            <InnerScene position={[posx, posy, posz]} name="innerObject" />
+            <InnerScene position={[-1, -1.9, -7.3]} name="innerObject" />
           </Frame>
           <group ref={bookGroupRef} name="book">
             <primitive object={nodes.BaseBone} ref={animRef} />
