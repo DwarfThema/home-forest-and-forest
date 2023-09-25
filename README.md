@@ -12,5 +12,3 @@ Platform : [`VivleThemeMuseum`](https://vivle-theme-museum-git-master-dwarfthema
 npm run dev
 # to Start
 ```
-
-\_
