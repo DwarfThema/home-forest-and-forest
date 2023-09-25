@@ -303,7 +303,12 @@ const Book = forwardRef(
             ))}
           </group>
         </group>
-        <Rig position={camPos} focus={camFocus} camSpeed={camSpeed} />
+        <Rig
+          position={camPos}
+          focus={camFocus}
+          camSpeed={camSpeed}
+          sqeuenceInt={sqeuenceInt}
+        />
       </>
     );
   }
