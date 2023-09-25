@@ -21,7 +21,7 @@ import { geometry } from "maath";
 import Frame from "./frame";
 import Rig from "./rig";
 import { useControls } from "leva";
-import InnerScene from "./inner/innerScene";
+import InnerScene from "./innerScene";
 
 extend(geometry);
 

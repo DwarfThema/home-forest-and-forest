@@ -38,7 +38,7 @@ export default function Home() {
             <input
               type="checkbox"
               value=""
-              className="sr-only peer"
+              className="sr-only peer cursor-pointer"
               onClick={() => {
                 bookRef.current.switchInput(isBookStyle);
                 setBookStyle((prev) => !prev);
@@ -46,17 +46,19 @@ export default function Home() {
             />
             {isBookStyle ? (
               <Image
-                src="/textures/pink.jpg"
+                src="/textures/pink.png"
                 width={200}
                 height={200}
                 alt="coverStyle"
+                className="cursor-pointer"
               />
             ) : (
               <Image
-                src="/textures/green.jpg"
+                src="/textures/green.png"
                 width={200}
                 height={200}
                 alt="coverStyle"
+                className="cursor-pointer"
               />
             )}
           </label>
