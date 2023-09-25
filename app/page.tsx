@@ -4,9 +4,10 @@ import StarsBg from "./src/starBg";
 import Book from "./src/book";
 import { Environment, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
+import { isMobile } from "react-device-detect";
 
 export default function Home() {
   const positions = useMemo(() => {
@@ -30,38 +31,53 @@ export default function Home() {
   const [isBookStyle, setBookStyle] = useState(true);
   const [sequenceInt, setSequenceInt] = useState(0);
 
+  const [fov, setFov] = useState(40);
+  const [btnSize, setBtnSize] = useState(200);
+  const [backSize, setBackSize] = useState(100);
+
+  useEffect(() => {
+    if (isMobile) {
+      setFov(55);
+      setBtnSize(50);
+      setBackSize(50);
+    } else {
+      setFov(40);
+      setBtnSize(200);
+      setBackSize(100);
+    }
+  }, [isMobile]);
+
   return (
     <main className="w-screen h-screen bg-black">
       <div className="absolute z-20 m-10 w-20">
         {sequenceInt === 0 ? (
-          <label className="bottom-56 left-1/2 z-20 flex cursor-pointer">
-            <input
-              type="checkbox"
-              value=""
-              className="sr-only peer cursor-pointer"
-              onClick={() => {
-                bookRef.current.switchInput(isBookStyle);
-                setBookStyle((prev) => !prev);
-              }}
-            />
+          <button className="cursor-pointer">
             {isBookStyle ? (
               <Image
                 src="/textures/pink.png"
-                width={200}
-                height={200}
+                width={btnSize}
+                height={btnSize}
                 alt="coverStyle"
                 className="cursor-pointer"
+                onClick={() => {
+                  bookRef.current.switchInput(isBookStyle);
+                  setBookStyle((prev) => !prev);
+                }}
               />
             ) : (
               <Image
                 src="/textures/green.png"
-                width={200}
-                height={200}
+                width={btnSize}
+                height={btnSize}
                 alt="coverStyle"
                 className="cursor-pointer"
+                onClick={() => {
+                  bookRef.current.switchInput(isBookStyle);
+                  setBookStyle((prev) => !prev);
+                }}
               />
             )}
-          </label>
+          </button>
         ) : (
           <button
             onClick={() => {
@@ -70,15 +86,16 @@ export default function Home() {
           >
             <Image
               src="/textures/backArrow.png"
-              width={100}
-              height={100}
+              width={backSize}
+              height={backSize}
               alt="back"
+              className="cursor-pointer"
             />
           </button>
         )}
       </div>
 
-      <Canvas shadows camera={{ fov: 40, position: [0, 0, 20], focus: 0 }}>
+      <Canvas shadows camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}>
         <Environment preset="apartment" />
         <color attach="background" args={["#202130"]} />
         <fog attach="fog" args={["#202030", 10, 70]} />
