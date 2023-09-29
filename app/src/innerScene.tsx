@@ -1,4 +1,4 @@
-import { Float, useGLTF } from "@react-three/drei";
+import { Float, useGLTF, useProgress } from "@react-three/drei";
 import { useFrame, useGraph } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import { Group, Mesh } from "three";
