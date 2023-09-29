@@ -17,8 +17,6 @@ export default function Rig({
 }) {
   const { controls } = useThree() as { controls: any };
 
-  console.log(controls);
-
   const [rigFix, setRigFix] = useState(true);
   const [azimuteInt, setAzimuteInt] = useState(0);
   useEffect(() => {

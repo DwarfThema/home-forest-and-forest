@@ -2,12 +2,13 @@
 
 import StarsBg from "./src/starBg";
 import Book from "./src/book";
-import { Environment, Sparkles } from "@react-three/drei";
+import { Environment, Sparkles, Stats } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
 import { isMobile } from "react-device-detect";
+import LoadingScreen from "./src/loadingScreen";
 
 export default function Home() {
   const positions = useMemo(() => {
@@ -48,8 +49,8 @@ export default function Home() {
   }, [isMobile]);
 
   return (
-    <main className="w-screen h-screen bg-black">
-      <div className="absolute z-20 m-10 w-20">
+    <main className="w-screen h-screen bg-white">
+      <div className="absolute z-10 m-10 w-20">
         {sequenceInt === 0 ? (
           <button className="cursor-pointer">
             {isBookStyle ? (
@@ -96,10 +97,11 @@ export default function Home() {
       </div>
 
       <Canvas shadows camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}>
-        <Environment preset="apartment" />
-        <color attach="background" args={["#202130"]} />
-        <fog attach="fog" args={["#202030", 10, 70]} />
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingScreen />}>
+          <Stats />
+          <Environment preset="apartment" />
+          <color attach="background" args={["#202130"]} />
+          <fog attach="fog" args={["#202030", 10, 70]} />
           <Book
             ref={bookRef}
             sqeunceFn={(result: number) => {
@@ -123,15 +125,15 @@ export default function Home() {
           {positions.map((props, i) => (
             <StarsBg key={i} {...props} />
           ))}
+          <EffectComposer>
+            <Bloom
+              luminanceThreshold={0.8}
+              luminanceSmoothing={1.5}
+              intensity={1}
+            />
+            <Vignette eskil={false} offset={0.01} darkness={0.75} />
+          </EffectComposer>
         </Suspense>
-        <EffectComposer>
-          <Bloom
-            luminanceThreshold={0.8}
-            luminanceSmoothing={1.5}
-            intensity={1}
-          />
-          <Vignette eskil={false} offset={0.01} darkness={0.75} />
-        </EffectComposer>
       </Canvas>
     </main>
   );
