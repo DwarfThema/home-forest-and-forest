@@ -49,7 +49,7 @@ export default function Home() {
   }, [isMobile]);
 
   return (
-    <main className="w-screen h-screen bg-white">
+    <main className="w-screen h-screen bg-black">
       <div className="absolute z-10 m-10 w-20">
         {sequenceInt === 0 ? (
           <button className="cursor-pointer">
