@@ -17,31 +17,37 @@ export default function Rig({
 }) {
   const { controls } = useThree() as { controls: any };
 
-  const [rigFix, setRigFix] = useState(true);
+  const [rigFix, setRigFix] = useState(false);
   const [azimuteInt, setAzimuteInt] = useState(0);
   useEffect(() => {
-    if (rigFix) {
+    if (!rigFix) {
       controls?.setLookAt(...position.toArray(), ...focus.toArray(), true);
     }
+  });
 
-    if (sqeuenceInt === 6 && isMobile) {
-      setTimeout(() => {
-        setRigFix(false);
-        setAzimuteInt(10);
-      }, 4000);
+  useEffect(() => {
+    if (sqeuenceInt === 6) {
+      if (isMobile) {
+        setTimeout(() => {
+          setRigFix(true);
+          setAzimuteInt(8);
+        }, 4000);
+      }
     } else {
-      setRigFix(true);
+      setRigFix(false);
       setAzimuteInt(0);
     }
-  });
+  }, [sqeuenceInt]);
 
   return (
     <>
       <CameraControls
         makeDefault
-        maxSpeed={rigFix ? camSpeed : 0}
-        minPolarAngle={Math.PI / 1.6}
-        maxPolarAngle={0}
+        maxSpeed={rigFix ? 0 : camSpeed}
+        minPolarAngle={-Math.PI / 1.6}
+        maxPolarAngle={Math.PI / 1.6}
+        polarRotateSpeed={0}
+        azimuthRotateSpeed={0.1}
         minAzimuthAngle={-Math.PI / azimuteInt}
         maxAzimuthAngle={Math.PI / azimuteInt}
       />

@@ -1,9 +1,15 @@
-import { Sparkles, useAnimations, useGLTF } from "@react-three/drei";
+import {
+  Sparkles,
+  useAnimations,
+  useGLTF,
+  useProgress,
+} from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,

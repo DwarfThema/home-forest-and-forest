@@ -33,7 +33,7 @@ export default function Frame({
         rotation={[Math.PI * 1, Math.PI * 1.5, Math.PI * 1]}
       >
         <planeGeometry args={[0.34, 0.43, 1]} />
-        <MeshPortalMaterial ref={portal} blur={1}>
+        <MeshPortalMaterial ref={portal} blur={0.8}>
           {children}
         </MeshPortalMaterial>
       </mesh>

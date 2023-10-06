@@ -49,7 +49,7 @@ export default function Home() {
   }, [isMobile]);
 
   return (
-    <main className="w-screen h-screen bg-white">
+    <main className="w-screen h-screen bg-black">
       <div className="absolute z-10 m-10 w-20">
         {sequenceInt === 0 ? (
           <button className="cursor-pointer">
@@ -98,7 +98,7 @@ export default function Home() {
 
       <Canvas shadows camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}>
         <Suspense fallback={<LoadingScreen />}>
-          <Stats />
+          {/* <Stats /> */}
           <Environment preset="apartment" />
           <color attach="background" args={["#202130"]} />
           <fog attach="fog" args={["#202030", 10, 70]} />
