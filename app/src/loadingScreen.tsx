@@ -22,7 +22,7 @@ export default function LoadingScreen() {
       setLoading(true);
       setTimeout(() => {
         setTransitionEnd(true);
-      }, 5500);
+      }, 5000);
     }
   }, [progress, loaded]);
 
