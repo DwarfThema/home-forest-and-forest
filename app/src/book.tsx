@@ -1,4 +1,6 @@
 import {
+  Float,
+  Gltf,
   Sparkles,
   useAnimations,
   useGLTF,
@@ -28,6 +30,7 @@ import Frame from "./frame";
 import Rig from "./rig";
 import { useControls } from "leva";
 import InnerScene from "./innerScene";
+import { lerp } from "three/src/math/MathUtils.js";
 
 extend(geometry);
 
@@ -267,15 +270,17 @@ const Book = forwardRef(
           rotation={[Math.PI / -0.56, Math.PI / 2.02, Math.PI / 0.52]}
           onClick={handleBaseRefClick}
         >
-          <Sparkles
-            visible={isPortalVisible ? true : false}
-            position={[0.9, 0.25, -0.53]}
-            count={35}
-            scale={0.1}
-            size={1}
-            speed={0.1}
-            color={"#fffd8f"}
-          />
+          <Float
+            speed={7}
+            rotationIntensity={0}
+            floatIntensity={0.1}
+            floatingRange={[0, 0.3]}
+          >
+            <DoorDir
+              isPortalVisible={isPortalVisible ? true : false}
+              sqeuenceInt={sqeuenceInt}
+            />
+          </Float>
           <Frame
             visible={isPortalVisible ? true : false}
             position={[1.07, 0.2, -0.53]}
@@ -323,3 +328,46 @@ const Book = forwardRef(
 Book.displayName = "Book";
 
 export default Book;
+
+function DoorDir({
+  isPortalVisible,
+  sqeuenceInt,
+  ...props
+}: {
+  isPortalVisible: boolean;
+  sqeuenceInt: number;
+}) {
+  const [scale, setScale] = useState(0);
+  const [particleScale, setParticleScale] = useState(0);
+
+  useFrame(() => {
+    if (sqeuenceInt === 5) {
+      setScale(lerp(scale, 1, 0.02));
+      setParticleScale(lerp(particleScale, 1, 0.01));
+    } else {
+      setScale(lerp(scale, 0, 0.05));
+      setParticleScale(lerp(particleScale, 0, 0.01));
+    }
+  });
+
+  return (
+    <>
+      <Gltf
+        visible={isPortalVisible ? true : false}
+        src="/models/doorDir.gltf"
+        position={[0.9, 0.52, -0.35]}
+        scale={scale}
+        {...props}
+      />
+      <Sparkles
+        visible={isPortalVisible ? true : false}
+        position={[0.9, 0.25, -0.53]}
+        count={35}
+        scale={0.1}
+        size={particleScale}
+        speed={0.1}
+        color={"#fffd8f"}
+      />
+    </>
+  );
+}
