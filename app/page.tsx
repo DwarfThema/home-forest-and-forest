@@ -2,7 +2,7 @@
 
 import StarsBg from "./src/starBg";
 import Book from "./src/book";
-import { Environment, Sparkles, Stats } from "@react-three/drei";
+import { Environment, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
@@ -50,7 +50,8 @@ export default function Home() {
 
   return (
     <main className="w-screen h-screen bg-black">
-      <div className="absolute z-10 m-10 w-20">
+      <LoadingScreen />
+      <div className="absolute z-10 m-10 w-12">
         {sequenceInt === 0 ? (
           <button className="cursor-pointer">
             {isBookStyle ? (
@@ -97,7 +98,7 @@ export default function Home() {
       </div>
 
       <Canvas shadows camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}>
-        <Suspense fallback={<LoadingScreen />}>
+        <Suspense>
           {/* <Stats /> */}
           <Environment preset="apartment" />
           <color attach="background" args={["#202130"]} />
