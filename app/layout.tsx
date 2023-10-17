@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Home: Forest and For-rest",
-  description: "VIVLE-THEME-MUSEUM : Home-Forest-And-Forest",
+  description: "VIVLE-THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={"font-main"}>{children}</body>
     </html>
   );
 }

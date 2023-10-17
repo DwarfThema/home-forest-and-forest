@@ -177,13 +177,13 @@ const MovingMesh = ({ geometry, material, position, right }: any) => {
   useEffect(() => {
     if (meshRef.current) {
       meshRef.current.position.x = position.x;
-      if (right && position.x < xPointMax) {
+      if (right) {
         setDirection(1);
-      } else if (!right && position.x > xPointMin) {
+      } else {
         setDirection(-1);
       }
     }
-  }, []);
+  }, [right]);
 
   useFrame((state, delta) => {
     const mesh = meshRef.current;
