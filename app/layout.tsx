@@ -1,10 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import thumbnail from "../public/thumbnail.jpeg";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://home-forest-and-forest.vercel.app/"),
   title: "Home: Forest and For-rest",
   description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
   openGraph: {
@@ -21,7 +23,7 @@ export const metadata: Metadata = {
         url: "/thumbnail.jpeg",
         width: 1800,
         height: 1600,
-        alt: "Home: Forest and For-rest",
+        alt: "My custom alt",
       },
     ],
     locale: "en_US",
@@ -33,6 +35,19 @@ export const metadata: Metadata = {
     description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
     creator: "JunhoPark & Serim Yang",
     images: ["/thumbnail.jpeg"],
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 
