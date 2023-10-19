@@ -3,8 +3,8 @@ import {
   Gltf,
   Sparkles,
   useAnimations,
+  useCursor,
   useGLTF,
-  useProgress,
 } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
@@ -47,6 +47,9 @@ sqeuenceInt 설명
 
 const Book = forwardRef(
   ({ sqeunceFn, ...props }: { sqeunceFn: Function }, ref) => {
+    const [cursor, setcursor] = useState(false);
+    useCursor(cursor);
+
     const [camPos, setCamPos] = useState(new Vector3(-1.5, 2.5, 5));
     const [camFocus, setCamFocus] = useState(new Vector3(0.8, -0.3, 0));
     const [camSpeed, setCamSpeed] = useState<number>(20);
@@ -298,9 +301,27 @@ const Book = forwardRef(
             }}
             isEnter={isEnter}
           >
-            <InnerScene position={[-1, -1.9, -7.3]} name="innerObject" />
+            <InnerScene
+              position={[-1, -1.9, -7.3]}
+              name="innerObject"
+              onPointerOver={() => {
+                setcursor(true);
+              }}
+              onPointerOut={() => {
+                setcursor(false);
+              }}
+            />
           </Frame>
-          <group ref={bookGroupRef} name="book">
+          <group
+            ref={bookGroupRef}
+            name="book"
+            onPointerOver={() => {
+              setcursor(true);
+            }}
+            onPointerOut={() => {
+              setcursor(false);
+            }}
+          >
             <primitive object={nodes.BaseBone} ref={animRef} />
             {meshs.map((mesh, index) => (
               <skinnedMesh
@@ -341,8 +362,8 @@ function DoorDir({
   const [particleScale, setParticleScale] = useState(0);
 
   useFrame(() => {
-    if (sqeuenceInt === 5) {
-      setScale(lerp(scale, 1, 0.02));
+    if (sqeuenceInt === 5 || sqeuenceInt === 3) {
+      setScale(lerp(scale, 0.8, 0.02));
       setParticleScale(lerp(particleScale, 1, 0.01));
     } else {
       setScale(lerp(scale, 0, 0.05));
@@ -355,7 +376,7 @@ function DoorDir({
       <Gltf
         visible={isPortalVisible ? true : false}
         src="/models/doorDir.gltf"
-        position={[0.9, 0.52, -0.35]}
+        position={[0.9, 0.5, -0.35]}
         scale={scale}
         {...props}
       />
