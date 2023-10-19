@@ -4,7 +4,6 @@ import {
   Sparkles,
   useAnimations,
   useGLTF,
-  useProgress,
 } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
 import {
@@ -341,8 +340,8 @@ function DoorDir({
   const [particleScale, setParticleScale] = useState(0);
 
   useFrame(() => {
-    if (sqeuenceInt === 5) {
-      setScale(lerp(scale, 1, 0.02));
+    if (sqeuenceInt === 5 || sqeuenceInt === 3) {
+      setScale(lerp(scale, 0.8, 0.02));
       setParticleScale(lerp(particleScale, 1, 0.01));
     } else {
       setScale(lerp(scale, 0, 0.05));
@@ -355,7 +354,7 @@ function DoorDir({
       <Gltf
         visible={isPortalVisible ? true : false}
         src="/models/doorDir.gltf"
-        position={[0.9, 0.52, -0.35]}
+        position={[0.9, 0.5, -0.35]}
         scale={scale}
         {...props}
       />
