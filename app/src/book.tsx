@@ -3,6 +3,7 @@ import {
   Gltf,
   Sparkles,
   useAnimations,
+  useCursor,
   useGLTF,
 } from "@react-three/drei";
 import { extend, useFrame, useGraph, useThree } from "@react-three/fiber";
@@ -46,6 +47,9 @@ sqeuenceInt 설명
 
 const Book = forwardRef(
   ({ sqeunceFn, ...props }: { sqeunceFn: Function }, ref) => {
+    const [cursor, setcursor] = useState(false);
+    useCursor(cursor);
+
     const [camPos, setCamPos] = useState(new Vector3(-1.5, 2.5, 5));
     const [camFocus, setCamFocus] = useState(new Vector3(0.8, -0.3, 0));
     const [camSpeed, setCamSpeed] = useState<number>(20);
@@ -297,9 +301,27 @@ const Book = forwardRef(
             }}
             isEnter={isEnter}
           >
-            <InnerScene position={[-1, -1.9, -7.3]} name="innerObject" />
+            <InnerScene
+              position={[-1, -1.9, -7.3]}
+              name="innerObject"
+              onPointerOver={() => {
+                setcursor(true);
+              }}
+              onPointerOut={() => {
+                setcursor(false);
+              }}
+            />
           </Frame>
-          <group ref={bookGroupRef} name="book">
+          <group
+            ref={bookGroupRef}
+            name="book"
+            onPointerOver={() => {
+              setcursor(true);
+            }}
+            onPointerOut={() => {
+              setcursor(false);
+            }}
+          >
             <primitive object={nodes.BaseBone} ref={animRef} />
             {meshs.map((mesh, index) => (
               <skinnedMesh
