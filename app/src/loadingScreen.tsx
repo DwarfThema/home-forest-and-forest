@@ -18,7 +18,7 @@ export default function LoadingScreen() {
   const [houseRotate, setHouseRoate] = useState(true);
 
   useEffect(() => {
-    if (loaded >= 68) {
+    if (loaded >= 72) {
       setLoading(true);
       setTimeout(() => {
         setTransitionEnd(true);
@@ -27,7 +27,7 @@ export default function LoadingScreen() {
   }, [progress, loaded]);
 
   useEffect(() => {
-    setLoadingPercent(Math.floor((loaded / 68) * 100));
+    setLoadingPercent(Math.floor((loaded / 72) * 100));
   }, [loaded]);
 
   useEffect(() => {
