@@ -57,13 +57,13 @@ export default function LoadingScreen() {
           />
           <Image
             src={logoVer}
-            className="absolute w-[400px] zero:flex lg:hidden"
+            className="absolute w-[350px] zero:flex lg:hidden"
             alt="logo"
           />
           <Image
             src={house}
             className={`absolute lg:w-[110px] lg:mb-[420px] lg:mr-[710px] 
-            zero:w-[70px] zero:mb-[460px] zero:mr-[155px]           ${
+            zero:w-[70px] zero:mb-[410px] zero:mr-[140px]           ${
               houseRotate ? "rotate-6" : "-rotate-6"
             } transform-gpu`}
             alt="house"
@@ -71,7 +71,7 @@ export default function LoadingScreen() {
           <Image
             src={star}
             className="absolute lg:w-[110px] lg:mt-[420px] lg:ml-[900px]
-            zero:w-[70px] zero:mt-[260px] zero:ml-[300px]
+            zero:w-[70px] zero:mt-[230px] zero:ml-[220px]
              animate-spin"
             alt="star"
           />
@@ -79,7 +79,7 @@ export default function LoadingScreen() {
         <div className="flex flex-col-reverse justify-end items-center">
           <Link
             href="https://www.vivlepark.com"
-            className="lg:w-[500px] zero:w-[400px] mt-[130px] "
+            className="lg:w-[500px] zero:w-[350px] lg:mt-[130px] zero:mt-[20px] "
             target="_blank"
           >
             <Image src={Supporter} alt="support" />

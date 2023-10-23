@@ -8,8 +8,6 @@ export default function InnerScene({ ...props }) {
   const { scene: staticScene } = useGLTF("/models/inner.gltf");
   const { nodes: staticNodes } = useGraph(staticScene);
 
-  console.log(staticNodes);
-
   const plantMesh = staticNodes.mesh_optimize as Group;
   const staticsMeshs: Mesh[] = [];
   plantMesh.traverse((obj) => {

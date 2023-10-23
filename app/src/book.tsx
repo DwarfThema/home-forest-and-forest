@@ -48,7 +48,7 @@ sqeuenceInt 설명
 const Book = forwardRef(
   ({ sqeunceFn, ...props }: { sqeunceFn: Function }, ref) => {
     const [cursor, setcursor] = useState(false);
-    useCursor(cursor);
+    useCursor(false);
 
     const [camPos, setCamPos] = useState(new Vector3(-1.5, 2.5, 5));
     const [camFocus, setCamFocus] = useState(new Vector3(0.8, -0.3, 0));

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: "/thumbnail.jpeg",
         width: 1800,
         height: 1600,
-        alt: "My custom alt",
+        alt: "Home: Forest and For-rest",
       },
     ],
     locale: "en_US",

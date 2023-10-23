@@ -5,6 +5,7 @@ import Book from "./src/book";
 import { Environment, Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { ACESFilmicToneMapping, sRGBEncoding } from "three";
 import { Canvas } from "@react-three/fiber";
 import Image from "next/image";
 import { isMobile } from "react-device-detect";
@@ -49,7 +50,7 @@ export default function Home() {
   }, [isMobile]);
 
   return (
-    <main className="w-screen h-screen bg-black">
+    <main className="w-screen h-screen absolute bg-black">
       <LoadingScreen />
       <div className="absolute z-10 m-10 w-12">
         {sequenceInt === 0 ? (
@@ -97,7 +98,15 @@ export default function Home() {
         )}
       </div>
 
-      <Canvas shadows camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}>
+      <Canvas
+        shadows
+        camera={{ fov: fov, position: [0, 0, 20], focus: 0 }}
+        className="w-screen h-screen"
+        onCreated={({ gl }) => {
+          gl.toneMapping = ACESFilmicToneMapping;
+          gl.toneMappingExposure = 0.9;
+        }}
+      >
         <Suspense>
           {/* <Stats /> */}
           <Environment preset="apartment" />
