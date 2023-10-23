@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Home: Forest and For-rest",
     description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
-    url: "https://www.memory-service-centre.com ",
+    url: "https://www.homeforestandfor-rest.com",
     images: [
       {
         url: "/thumbnail.jpeg",
