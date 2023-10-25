@@ -6,7 +6,7 @@ import thumbnail from "../public/thumbnail.jpeg";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://home-forest-and-forest.vercel.app/"),
+  metadataBase: new URL("https://www.homeforestandfor-rest.com"),
   title: "Home: Forest and For-rest",
   description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
   openGraph: {
