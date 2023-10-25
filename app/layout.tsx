@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Home: Forest and For-rest",
     description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
-    creator: "JunhoPark & Serim Yang",
+    creator: "Serim Yang & Junho Park",
     images: ["/thumbnail.jpeg"],
   },
   robots: {

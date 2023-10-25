@@ -165,8 +165,8 @@ export default function InnerScene({ ...props }) {
 const MovingMesh = ({ geometry, material, position, right }: any) => {
   const meshRef = useRef<Mesh | null>(null);
 
-  const xPointMax = 6.3;
-  const xPointMin = -4.2;
+  const xPointMax = 6.3 - 1.5;
+  const xPointMin = -4.2 + 1.5;
   const speed = 5;
   const rotationSpeed = 0.8; // 회전 속도
 
