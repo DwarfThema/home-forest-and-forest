@@ -2,16 +2,17 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import thumbnail from "../public/thumbnail.jpeg";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.homeforestandfor-rest.com"),
   title: "Home: Forest and For-rest",
-  description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
+  description: "THEME-MUSEUM : Home-Forest-And-Forest by selim Yang",
   openGraph: {
     title: "Home: Forest and For-rest",
-    description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
+    description: "THEME-MUSEUM : Home-Forest-And-Forest by selim Yang",
     url: "https://www.homeforestandfor-rest.com",
     images: [
       {
@@ -32,8 +33,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Home: Forest and For-rest",
-    description: "THEME-MUSEUM : Home-Forest-And-Forest by Serim Yang",
-    creator: "Serim Yang & Junho Park",
+    description: "THEME-MUSEUM : Home-Forest-And-Forest by selim Yang",
+    creator: "selim Yang & Junho Park",
     images: ["/thumbnail.jpeg"],
   },
   robots: {
@@ -58,7 +59,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={"font-main"}>{children}</body>
+      <body className={"font-main"}>
+        <Analytics />
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,7 +2,7 @@
 
 Title : Home: Forest and For-rest
 
-Author : Serim Yang
+Author : selim Yang
 
 ArtUrl : [`Click`](https://home-forest-and-forest-git-master-dwarfthema.vercel.app/)
 
