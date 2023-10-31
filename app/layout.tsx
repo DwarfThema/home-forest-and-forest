@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import thumbnail from "../public/thumbnail.jpeg";
 import { Analytics } from "@vercel/analytics/react";
+import GoogleAnalytics from "./src/googleAnalytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -60,6 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={"font-main"}>
+        <GoogleAnalytics />
         <Analytics />
         {children}
       </body>
